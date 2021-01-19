@@ -1,11 +1,16 @@
 {
-  "name": "@vtex/cli-plugin-template",
-  "description": "vtex plugin template",
+  "name": "@vtex/cli-plugin-functions",
+  "description": " A CLI plugin that manages StoreFramework serverless functions",
   "version": "0.0.0",
   "bugs": "https://github.com/vtex/cli-plugin-template/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
+    "@types/aws-lambda": "^8.10.70",
+    "@types/cors": "^2.8.9",
+    "aws-lambda": "^1.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "tslib": "^1"
   },
   "devDependencies": {
