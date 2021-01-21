@@ -7,7 +7,7 @@ export const getSiteRoot = () => {
   const cwd = process.cwd()
   const { root: rootDirName } = path.parse(cwd)
 
-  const find = (dir) => {
+  const find = (dir: string): string => {
     try {
       accessSync(path.join(dir, CONFIG_FILE_NAME))
 

@@ -8,8 +8,6 @@ import path from 'path'
 
 const PORT = 8080
 
-type LambdaParam = { [key: any]: any }
-
 export const server = async (basePath: string) => {
   const app: Application = express()
 
@@ -17,7 +15,7 @@ export const server = async (basePath: string) => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  const endpoints: { [key: string]: (LambdaParam: APIGatewayEvent, LambdaParam: Context) => any } = {}
+  const endpoints: { [key: string]: (event: APIGatewayEvent, context: Context) => any } = {}
 
   console.log('\nFunctions:')
 
