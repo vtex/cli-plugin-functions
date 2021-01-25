@@ -5,15 +5,18 @@ export const CONFIG_FILE_NAME = 'gatsby-config.js'
 
 export const getSiteRoot = () => {
   const cwd = process.cwd()
-  const { root: rootDirName } = path.parse(cwd)
+  const fsRoot = path.parse(cwd).root
 
-  const find = (dir: string): string => {
+  let foundProjectRoot = false
+  let dir = cwd
+
+  while (!foundProjectRoot) {
     try {
       accessSync(path.join(dir, CONFIG_FILE_NAME))
 
-      return dir
+      foundProjectRoot = true
     } catch (err) {
-      if (dir === rootDirName) {
+      if (dir === fsRoot) {
         console.error(
           "Gatsby site file config doesn't exist or is not readable. " +
             "Please make sure you're in the site's directory or add a " +
@@ -22,9 +25,9 @@ export const getSiteRoot = () => {
         throw new Error('Root dir not found')
       }
 
-      return find(path.resolve(dir, '..'))
+      dir = path.resolve(dir, '..')
     }
   }
 
-  return find(cwd)
+  return dir
 }
