@@ -4,13 +4,15 @@ Extend the `vtex` toolbelt!
 
 ## Developing
 
+1. Run `yarn link` on this project.
 1. Clone `vtex/toolbelt` and follow the steps on the Contributing section.
-2. Clone/Create a plugin with this template.
-3. Change the template name under this project's `package.json`.
-2. Run `yarn link` on this project.
-3. Now run `vtex link @vtex/cli-plugin-template` (or the new name) on the `vtex/toolbelt` project.
-4. Run `yarn watch` on the `vtex/toolbelt`
-5. Test the command on a VTEX IO app with `vtex-test hello`
+1. Now run `yarn link @vtex/cli-plugin-functions` (or the new name) on the `vtex/toolbelt` project.
+1. Run `yarn watch` on the `vtex/toolbelt`
+1. Test the command on a Gatsby store with `vtex-test functions`
+
+The Gatsby store should have a directory `api` containing functions. You can
+use this project as an example:
+[vtex-site/storefaas.store](https://github.com/vtex-sites/storefaas.store).
 
 For more information, read [Ocliff Docs](https://oclif.io/docs/introduction).
 
@@ -25,11 +27,11 @@ For more information, read [Ocliff Docs](https://oclif.io/docs/introduction).
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g @vtex/cli-plugin-template
+$ npm install -g @vtex/cli-plugin-functions
 $ vtex COMMAND
 running command...
 $ vtex (-v|--version|version)
-@vtex/cli-plugin-template/0.0.0 linux-x64 node-v12.18.4
+@vtex/cli-plugin-functions/0.0.0 linux-x64 node-v12.20.0
 $ vtex --help [COMMAND]
 USAGE
   $ vtex COMMAND
@@ -38,27 +40,24 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`vtex hello [FILE]`](#vtex-hello-file)
+* [`vtex functions [FILE]`](#vtex-functions-file)
 
-## `vtex hello [FILE]`
+## `vtex functions [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ vtex hello [FILE]
+  $ vtex functions [FILE]
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-  -v, --verbose    Show debug level logs
-  --trace          Ensure all requests to VTEX IO are traced
+  -h, --help     show CLI help
+  -v, --verbose  Show debug level logs
+  --trace        Ensure all requests to VTEX IO are traced
 
 EXAMPLE
-  $ oclif-example hello
-  hello world from ./src/hello.ts!
+  $ vtex-test functions
 ```
 
-_See code: [build/commands/hello.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/hello.ts)_
+_See code: [build/commands/functions.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/functions.ts)_
 <!-- commandsstop -->
