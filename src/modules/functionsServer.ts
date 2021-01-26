@@ -2,13 +2,10 @@ import { APIGatewayEvent, Context } from 'aws-lambda'
 import * as bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
-
 import { readdirSync } from 'fs'
 import path from 'path'
 
-const PORT = 8080
-
-export const server = async (basePath: string) => {
+export const functionsServer = async (basePath: string, port: number) => {
   const app: Application = express()
 
   app.use(cors())
@@ -26,9 +23,11 @@ export const server = async (basePath: string) => {
 
       endpoints[functionName] = handler
 
-      console.log(`- ${functionName}`)
+      console.log(`- http://localhost:${8080}/functions/${functionName}`)
     })
   )
+
+  console.log('')
 
   app.all('/*', async (req: Request, res: Response) => {
     const [endpoint] = req.params['0'].split('/')
@@ -51,7 +50,7 @@ export const server = async (basePath: string) => {
     }
   })
 
-  app.listen(PORT, () => {
-    console.log(`\nFunctions server is listening on: http://localhost:${PORT}`)
+  app.listen(port, () => {
+    console.log(`\nServer is listening on: http://localhost:${port}`)
   })
 }
