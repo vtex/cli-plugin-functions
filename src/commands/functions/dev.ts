@@ -1,9 +1,9 @@
 import { Command } from '@oclif/command'
 import { CustomCommand } from 'vtex'
-import { getSiteRoot } from '../../modules/SiteRoot'
-import { proxyServer } from '../../modules/proxyServer'
-import { frameworkServer } from '../../modules/frameworkServer'
-import { functionsServer } from '../../modules/functionsServer'
+import { getSiteRoot } from '../../modules/server/SiteRoot'
+import { proxyServer } from '../../modules/server/proxyServer'
+import { frameworkServer } from '../../modules/server/frameworkServer'
+import { functionsServer } from '../../modules/server/functionsServer'
 import path from 'path'
 
 export default class FunctionsDev extends Command {
@@ -16,7 +16,7 @@ export default class FunctionsDev extends Command {
   }
 
   async run() {
-    this.parse(Functions)
+    this.parse(FunctionsDev)
 
     const functionsPort = 3000
     const proxyPort = 8080

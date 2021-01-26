@@ -9,6 +9,7 @@
     "@types/aws-lambda": "^8.10.70",
     "@types/cors": "^2.8.9",
     "aws-lambda": "^1.0.6",
+    "aws-sdk": "^2.831.0",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
