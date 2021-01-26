@@ -23,7 +23,13 @@ export default class Functions extends Command {
     const functionsPort = 3000
     const proxyPort = 8080
 
-    console.log(`Starting server at http://localhost:${proxyPort}`)
+    console.log(`
+   ╭──────────────────────────────────────────────╮
+   │                                              │
+   │   Starting server at http://localhost:8080   │
+   │                                              │
+   ╰──────────────────────────────────────────────╯
+`)
 
     const functionsDir = path.join(getSiteRoot(), 'api')
 

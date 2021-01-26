@@ -23,9 +23,11 @@ export const functionsServer = async (basePath: string, port: number) => {
 
       endpoints[functionName] = handler
 
-      console.log(`- ${functionName}`)
+      console.log(`- http://localhost:${8080}/functions/${functionName}`)
     })
   )
+
+  console.log('')
 
   app.all('/*', async (req: Request, res: Response) => {
     const [endpoint] = req.params['0'].split('/')
