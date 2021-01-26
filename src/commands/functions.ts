@@ -1,7 +1,9 @@
 import { Command } from '@oclif/command'
 import { CustomCommand } from 'vtex'
 import { getSiteRoot } from '../modules/SiteRoot'
-import { server } from '../modules/functionsServer'
+import { proxyServer } from '../modules/proxyServer'
+import { frameworkServer } from '../modules/frameworkServer'
+import { functionsServer } from '../modules/functionsServer'
 import path from 'path'
 
 export default class Functions extends Command {
@@ -18,8 +20,23 @@ export default class Functions extends Command {
   async run() {
     this.parse(Functions)
 
+    const functionsPort = 3000
+    const proxyPort = 8080
+
+    console.log(`
+   ╭──────────────────────────────────────────────╮
+   │                                              │
+   │   Starting server at http://localhost:8080   │
+   │                                              │
+   ╰──────────────────────────────────────────────╯
+`)
+
     const functionsDir = path.join(getSiteRoot(), 'api')
 
-    server(functionsDir)
+    await functionsServer(functionsDir, functionsPort)
+
+    frameworkServer()
+
+    proxyServer(functionsPort, proxyPort)
   }
 }
