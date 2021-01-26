@@ -12,7 +12,7 @@ export const frameworkServer = () => {
 
   process.stdin.pipe(process.stdin)
 
-  const handleProcessExit = function (code) {
+  const handleProcessExit = (code: any) => {
     console.log(code)
     process.exit(code)
   }
@@ -20,7 +20,10 @@ export const frameworkServer = () => {
   ps.on('close', handleProcessExit)
   ps.on('SIGINT', handleProcessExit)
   ps.on('SIGTERM', handleProcessExit)
-  ;['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP', 'exit'].forEach((signal) => {
+
+  const exitSignals = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP', 'exit']
+
+  exitSignals.forEach((signal) => {
     process.on(signal, () => {
       try {
         process.kill(-ps.pid)
