@@ -6,7 +6,7 @@ import { frameworkServer } from '../modules/frameworkServer'
 import { functionsServer } from '../modules/functionsServer'
 import path from 'path'
 
-export default class Functions extends Command {
+export default class FunctionsDev extends Command {
   static description = 'run a local server to test serverless functions'
 
   static examples = [`$ vtex-test functions dev`]
