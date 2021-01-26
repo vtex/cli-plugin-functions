@@ -3,7 +3,7 @@ import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import { readdirSync } from 'fs'
 import path from 'path'
-import { lambdaEvent } from './utils/lambdaEvent'
+import { lambdaEvent } from '../utils/lambdaEvent'
 
 function flattenArrays(data: Record<string, any>) {
   const newData: Record<string, any> = {}
