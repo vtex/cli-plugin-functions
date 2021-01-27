@@ -18,6 +18,15 @@ export const proxyServer = (functionsPort: number, proxyPort: number) => {
   )
 
   app.use(
+    '/socket.io',
+    createProxyMiddleware({
+      target: `http://localhost:${GATSBY_PORT}`,
+      changeOrigin: true,
+      ws: true,
+    })
+  )
+
+  app.use(
     '/*',
     createProxyMiddleware({
       target: `http://localhost:${GATSBY_PORT}`,
