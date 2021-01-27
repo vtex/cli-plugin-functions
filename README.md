@@ -40,15 +40,45 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`vtex functions [FILE]`](#vtex-functions-file)
+* [`vtex functions`](#vtex-functions)
+* [`vtex functions:deploy`](#vtex-functionsdeploy)
+* [`vtex functions:dev`](#vtex-functionsdev)
 
-## `vtex functions [FILE]`
+## `vtex functions`
 
-describe the command here
+StoreFramework serverless functions
 
 ```
 USAGE
-  $ vtex functions [FILE]
+  $ vtex functions
+
+EXAMPLE
+  $ vtex-test functions
+```
+
+_See code: [build/commands/functions/index.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/functions/index.ts)_
+
+## `vtex functions:deploy`
+
+upload serverless functions to the cloud
+
+```
+USAGE
+  $ vtex functions:deploy
+
+EXAMPLE
+  $ vtex-test functions deploy
+```
+
+_See code: [build/commands/functions/deploy.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/functions/deploy.ts)_
+
+## `vtex functions:dev`
+
+run a local server to test serverless functions
+
+```
+USAGE
+  $ vtex functions:dev
 
 OPTIONS
   -h, --help     show CLI help
@@ -56,8 +86,8 @@ OPTIONS
   --trace        Ensure all requests to VTEX IO are traced
 
 EXAMPLE
-  $ vtex-test functions
+  $ vtex-test functions dev
 ```
 
-_See code: [build/commands/functions.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/functions.ts)_
+_See code: [build/commands/functions/dev.ts](https://github.com/vtex/cli-plugin-template/blob/v0.0.0/build/commands/functions/dev.ts)_
 <!-- commandsstop -->
