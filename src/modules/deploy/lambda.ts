@@ -22,36 +22,31 @@ export const createFunction = async () => {
     },
   }
 
-  const apigateway = new AWS.APIGateway()
+  const apigateway = new AWS.ApiGatewayV2()
 
   const functionResp = await lambda.createFunction(params).promise()
 
   console.log('function', functionResp)
 
-  const apiParams = {
-    name: 'hello-node-1-rest-api',
-  }
+  const respApi = await apigateway
+    .createApi({
+      Name: 'hello-node-1-api-gateway-v2',
+      ProtocolType: 'HTTP',
+      Target: functionResp.FunctionArn,
+    })
+    .promise()
 
-  const respRestApi = await apigateway.createRestApi(apiParams).promise()
+  console.log('api', respApi)
 
-  console.log('rest api', respRestApi)
+  const respPermission = await lambda
+    .addPermission({
+      FunctionName: functionResp.FunctionName!,
+      StatementId: 'random-string',
+      Action: 'lambda:InvokeFunction',
+      Principal: 'apigateway.amazonaws.com',
+      SourceArn: `arn:aws:execute-api:us-east-2:688157472274:${respApi.ApiId}/*/$default`,
+    })
+    .promise()
 
-  const resources = await apigateway.getResources({ restApiId: respRestApi.id! }).promise()
-
-  /*
-  apigateway.getRestApis({ }, function(_error, data) {
-    console.dir(data, {depth: null})
-    console.dir(_error, {depth: null})
-  })
-  */
-
-  const resourceParams = {
-    parentId: resources.items![0].id!,
-    pathPart: 'hello',
-    restApiId: respRestApi.id!,
-  }
-
-  const resourceResp = await apigateway.createResource(resourceParams).promise()
-
-  console.log('resource resp', resourceResp)
+  console.log('permission', respPermission)
 }
