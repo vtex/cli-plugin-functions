@@ -7,6 +7,6 @@ export default class FunctionsDeploy extends Command {
   static examples = [`$ vtex-test functions deploy`]
 
   async run() {
-    createFunction()
+    await createFunction()
   }
 }
