@@ -44,7 +44,13 @@ export const functionsServer = async (basePath: string, port: number) => {
     try {
       const { body, statusCode } = await endpoints[endpoint](lambdaEvent as APIGatewayEvent, {} as Context)
 
-      res.status(statusCode).json(body)
+      const response = res.status(statusCode)
+
+      if (typeof body === 'object') {
+        response.json(body)
+      } else {
+        response.send(body)
+      }
     } catch (error) {
       res.status(400).json({ error })
     }
