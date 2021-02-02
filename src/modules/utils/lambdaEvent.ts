@@ -24,7 +24,7 @@ export const lambdaEvent = (payload: EventPayload): APIGatewayProxyEventV2 => {
 
     headers: payload.headers,
     queryStringParameters: payload.queryStringParameters,
-    rawQueryString: urlParse(payload.url).query || '',
+    rawQueryString: urlParse(payload.url).query ?? '',
     body: payload.body,
 
     requestContext: {
