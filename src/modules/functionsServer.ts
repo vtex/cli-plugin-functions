@@ -3,14 +3,22 @@ import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import { readdirSync } from 'fs'
 import path from 'path'
-import { parse as urlParse } from 'url'
-import { format } from 'date-fns'
+import { lambdaEvent } from './utils/lambdaEvent'
 
-export const functionsServer = async (basePath: string, port: number) => {
-  const app: Application = express()
+function flattenArrays(data: Record<string, any>) {
+  const newData: Record<string, any> = {}
 
-  app.use(cors())
-  const endpoints: { [key: string]: (event: APIGatewayProxyEventV2, context: Context) => any } = {}
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) {
+      newData[key] = value.toString()
+    }
+  })
+
+  return newData
+}
+
+async function getFunctions(basePath: string) {
+  const endpoints: Record<string, (event: APIGatewayProxyEventV2, context: Context) => any> = {}
 
   console.log('\nFunctions:')
 
@@ -25,63 +33,33 @@ export const functionsServer = async (basePath: string, port: number) => {
     })
   )
 
+  return endpoints
+}
+
+export const functionsServer = async (basePath: string, port: number) => {
+  const endpoints = await getFunctions(basePath)
+
+  const app: Application = express()
+
+  app.use(cors())
+
   app.all('/*', async (req: Request, res: Response) => {
     const [endpoint] = req.params['0'].split('/')
 
-    const queryStringParameters: { [key: string]: string } = {}
-
-    Object.entries(req.query).forEach(([key, value]) => {
-      if (value !== undefined) {
-        queryStringParameters[key] = value.toString()
-      }
-    })
-
-    const headers: { [key: string]: string } = {}
-
-    Object.entries(req.headers).forEach(([key, value]) => {
-      if (value !== undefined) {
-        if (Array.isArray(value)) {
-          headers[key] = value[value.length - 1]
-        } else {
-          headers[key] = value
-        }
-      }
-    })
-
-    const now = new Date()
-    const lambdaEvent: APIGatewayProxyEventV2 = {
-      version: '2.0',
-      routeKey: '$default',
-      rawPath: '/',
-      isBase64Encoded: false,
-
-      headers,
-      queryStringParameters,
-      rawQueryString: urlParse(req.url).query || '',
+    const event = lambdaEvent({
       body: req.body,
+      ip: req.ip,
+      method: req.method,
+      path: req.path,
+      protocol: req.protocol,
+      url: req.url,
 
-      requestContext: {
-        accountId: 'accountid',
-        apiId: 'apiid',
-        domainName: 'apiid.execute-api.us-east-2.amazonaws.com',
-        domainPrefix: 'domainprefix',
-        http: {
-          method: req.method,
-          path: req.path,
-          protocol: req.protocol,
-          sourceIp: req.ip,
-          userAgent: req.headers['user-agent']!,
-        },
-        requestId: 'request-id',
-        routeKey: '$default',
-        stage: '$default',
-        time: format(now, 'dd/MMM/u:HH:mm:ss xx'),
-        timeEpoch: +now,
-      },
-    }
+      headers: flattenArrays(req.headers),
+      queryStringParameters: flattenArrays(req.query),
+    })
 
     try {
-      const { body, statusCode } = await endpoints[endpoint](lambdaEvent, {} as Context)
+      const { body, statusCode } = await endpoints[endpoint](event, {} as Context)
 
       res.status(statusCode).json(body)
     } catch (error) {
