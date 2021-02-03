@@ -1,17 +1,28 @@
-import fs from 'fs'
 import AWS from 'aws-sdk'
+import path from 'path'
 
 AWS.config.update({ region: 'us-east-2' })
 
-export const createFunction = async () => {
+export const createFunctions = async (functionsPath: string) => {
+  console.log(functionsPath)
+  /*
+  glob.sync(path.resolve(functionsPath, '*.zip')).forEach((functionPath) =>
+    createFunction(functionPath)
+  )
+  */
+}
+
+export const createFunction = async (filename: string, content: Buffer) => {
+  const functionName = path.parse(filename).name
+
   const lambda = new AWS.Lambda()
 
   const params = {
     Code: {
-      ZipFile: fs.readFileSync('./function.zip'),
+      ZipFile: content,
     },
-    Description: 'Test function in nodejs deployed using nodejs',
-    FunctionName: 'hello-node-1',
+    Description: `StoreFramework Function - ${functionName}`,
+    FunctionName: functionName,
     Handler: 'index.handler',
     Publish: true,
     Role: 'arn:aws:iam::688157472274:role/lambda-ex',
@@ -40,7 +51,7 @@ export const createFunction = async () => {
 
   const respPermission = await lambda
     .addPermission({
-      FunctionName: functionResp.FunctionName!,
+      FunctionName: params.FunctionName,
       StatementId: 'random-string',
       Action: 'lambda:InvokeFunction',
       Principal: 'apigateway.amazonaws.com',

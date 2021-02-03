@@ -1,12 +1,9 @@
 import webpack from 'webpack'
-import webpackConfig from '/.webpackConfig'
+import { generateConfig } from './webpack.config'
+import { getSiteRoot } from '../utils/siteRoot'
 
+export const build = (distDir: string) => {
+  const root = getSiteRoot()
 
-webpack({
-  // [Configuration Object](/configuration/)
-}, (err, stats) => { // [Stats Object](#stats-object)
-  if (err || stats.hasErrors()) {
-    // [Handle errors here](#error-handling)
-  }
-  // Done processing
-});
+  webpack(generateConfig(root, distDir))
+}
