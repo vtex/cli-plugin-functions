@@ -5,8 +5,8 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import { lambdaEvent } from './utils/lambdaEvent'
 
-function flattenArrays(data: Record<string, any>) {
-  const newData: Record<string, any> = {}
+function stringifyValues(data: Record<string, any>) {
+  const newData: Record<string, string> = {}
 
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined) {
@@ -54,8 +54,8 @@ export const functionsServer = async (basePath: string, port: number) => {
       protocol: req.protocol,
       url: req.url,
 
-      headers: flattenArrays(req.headers),
-      queryStringParameters: flattenArrays(req.query),
+      headers: stringifyValues(req.headers),
+      queryStringParameters: stringifyValues(req.query),
     })
 
     try {
