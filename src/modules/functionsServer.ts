@@ -1,18 +1,24 @@
-import { APIGatewayEvent, Context } from 'aws-lambda'
-import * as bodyParser from 'body-parser'
+import { APIGatewayProxyEventV2, Context } from 'aws-lambda'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import { readdirSync } from 'fs'
 import path from 'path'
+import { lambdaEvent } from './utils/lambdaEvent'
 
-export const functionsServer = async (basePath: string, port: number) => {
-  const app: Application = express()
+function stringifyValues(data: Record<string, any>) {
+  const newData: Record<string, string> = {}
 
-  app.use(cors())
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) {
+      newData[key] = value.toString()
+    }
+  })
 
-  const endpoints: { [key: string]: (event: APIGatewayEvent, context: Context) => any } = {}
+  return newData
+}
+
+async function getFunctions(basePath: string) {
+  const endpoints: Record<string, (event: APIGatewayProxyEventV2, context: Context) => any> = {}
 
   console.log('\nFunctions:')
 
@@ -27,22 +33,33 @@ export const functionsServer = async (basePath: string, port: number) => {
     })
   )
 
-  console.log('')
+  return endpoints
+}
+
+export const functionsServer = async (basePath: string, port: number) => {
+  const endpoints = await getFunctions(basePath)
+
+  const app: Application = express()
+
+  app.use(cors())
 
   app.all('/*', async (req: Request, res: Response) => {
     const [endpoint] = req.params['0'].split('/')
 
-    const lambdaEvent = {
+    const event = lambdaEvent({
       body: req.body,
-      queryStringParameters: req.query,
-      httpMethod: req.method,
-      headers: req.headers,
+      ip: req.ip,
+      method: req.method,
       path: req.path,
-      pathParameters: req.params,
-    }
+      protocol: req.protocol,
+      url: req.url,
+
+      headers: stringifyValues(req.headers),
+      queryStringParameters: stringifyValues(req.query),
+    })
 
     try {
-      const { body, statusCode } = await endpoints[endpoint](lambdaEvent as APIGatewayEvent, {} as Context)
+      const { body, statusCode } = await endpoints[endpoint](event, {} as Context)
 
       res.status(statusCode).json(body)
     } catch (error) {

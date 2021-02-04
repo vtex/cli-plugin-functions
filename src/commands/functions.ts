@@ -1,6 +1,6 @@
 import { Command } from '@oclif/command'
 import { CustomCommand } from 'vtex'
-import { getSiteRoot } from '../modules/SiteRoot'
+import { getSiteRoot } from '../modules/utils/siteRoot'
 import { proxyServer } from '../modules/proxyServer'
 import { frameworkServer } from '../modules/frameworkServer'
 import { functionsServer } from '../modules/functionsServer'
