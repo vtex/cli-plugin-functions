@@ -60,13 +60,11 @@ module.exports.generateConfig = (dirName, distDir, account, Provider) => {
         console.log('asdf', functions)
         const provider = new Provider(account)
 
-        for (const item of functions) {
-          console.log('asdf', item)
-          // eslint-disable-next-line no-await-in-loop
-          await provider
-            .createOrUpdateFunction(path.parse(item.filename).name, item.content)
-            .catch((x) => console.error(x))
-        }
+        Promise.all(
+          functions.map((item) =>
+            provider.createOrUpdateFunction(path.parse(item.filename).name, item.content).catch((x) => console.error(x))
+          )
+        )
       })
     },
   }

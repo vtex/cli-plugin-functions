@@ -60,17 +60,6 @@ class AWSProvider extends BaseProvider {
       })
       .promise()
 
-    const paramsRoute = {
-      ApiId: respApi.ApiId!,
-      RouteKey: `ANY /${functionName}`,
-      AuthorizationType: 'NONE',
-      Target: functionResp.FunctionArn,
-    }
-
-    const resp = await apigateway.createRoute(paramsRoute).promise()
-
-    console.log(resp)
-
     await lambda
       .addPermission({
         FunctionName: params.FunctionName,
