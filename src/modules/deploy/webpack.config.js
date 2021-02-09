@@ -1,9 +1,8 @@
 const ZipPlugin = require('zip-webpack-plugin')
 const path = require('path')
 const glob = require('glob')
-const lambda = require('./lambda')
 
-module.exports.generateConfig = (dirName, distDir) => {
+module.exports.generateConfig = (dirName, distDir, account, Provider) => {
   const config = {
     entry: {},
     context: dirName,
@@ -38,15 +37,16 @@ module.exports.generateConfig = (dirName, distDir) => {
   glob.sync('./api/*.[tj]s?(x)').forEach((filename) => (config.entry[path.parse(filename).name] = filename))
 
   // const createRedirect = (name) => `http://localhost:3000/${name}`
+  //
+  const functions = []
 
-  const redirectsPlugin = {
+  const collectFunctions = {
     apply: (compiler) => {
-      compiler.hooks.assetEmitted.tap('Functions Deployment', (filename, info) => {
-        lambda.createFunction(filename, info.content).catch((x) => console.log(x))
-
-        // const redirects = {}
-
+      compiler.hooks.assetEmitted.tap('Functions Collector', (filename, info) => {
+        functions.push({ filename, content: info.content })
+        console.log(functions)
         /*
+        const redirects = {}
         compilation.entrypoints.forEach((_, key) => (redirect[filename] = createRedirect(filename)))
         fs.writeFileSync('redirects.json', `${JSON.stringify(redirects)}\n`)
         */
@@ -54,9 +54,27 @@ module.exports.generateConfig = (dirName, distDir) => {
     },
   }
 
+  const afterEmit = {
+    apply: (compiler) => {
+      compiler.hooks.afterEmit.tap('Functions Deployment', async () => {
+        console.log('asdf', functions)
+        const provider = new Provider(account)
+
+        for (const item of functions) {
+          console.log('asdf', item)
+          // eslint-disable-next-line no-await-in-loop
+          await provider
+            .createOrUpdateFunction(path.parse(item.filename).name, item.content)
+            .catch((x) => console.error(x))
+        }
+      })
+    },
+  }
+
   const pluginConfig = {
     plugins: [
-      redirectsPlugin,
+      collectFunctions,
+      afterEmit,
       ...Object.keys(config.entry).map((entryName) => {
         return new ZipPlugin({
           path: path.resolve(dirName, distDir),

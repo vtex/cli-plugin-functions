@@ -12,6 +12,12 @@ export const createFunctions = async (functionsPath: string) => {
   */
 }
 
+export const listFunction = async () => {
+  const lambda = new AWS.Lambda()
+
+  return lambda.listFunctions()
+}
+
 export const createFunction = async (filename: string, content: Buffer) => {
   const functionName = path.parse(filename).name
 
@@ -35,7 +41,14 @@ export const createFunction = async (filename: string, content: Buffer) => {
 
   const apigateway = new AWS.ApiGatewayV2()
 
-  const functionResp = await lambda.createFunction(params).promise()
+  let functionResp: AWS.Lambda.FunctionConfiguration
+
+  try {
+    functionResp = await lambda.createFunction(params).promise()
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
 
   console.log('function', functionResp)
 
