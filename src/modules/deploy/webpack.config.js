@@ -44,7 +44,6 @@ module.exports.generateConfig = (dirName, distDir, provider) => {
     apply: (compiler) => {
       compiler.hooks.assetEmitted.tap('Functions Collector', (filename, info) => {
         functions.push({ filename, content: info.content })
-        console.log(functions)
         /*
         const redirects = {}
         compilation.entrypoints.forEach((_, key) => (redirect[filename] = createRedirect(filename)))

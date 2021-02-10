@@ -75,13 +75,13 @@ class AWSProvider extends BaseProvider {
     const existingFunctions = await this.listFunctions()
 
     if (functionName in existingFunctions) {
-      process.stdout.write(`Updating function ${functionName}... `)
+      console.log(`Updating function ${functionName}`)
       await this.updateFunction(functionName, content)
-      console.log('OK')
+      console.log(`Function ${functionName} updated`)
     } else {
-      process.stdout.write(`Creating function ${functionName}... `)
+      console.log(`Creating function ${functionName}... `)
       await this.createFunction(functionName, content)
-      console.log('OK')
+      console.log(`Function ${functionName} created`)
     }
   }
 
