@@ -4,6 +4,7 @@ import express, { Application, Request, Response } from 'express'
 import { readdirSync } from 'fs'
 import path from 'path'
 import { lambdaEvent } from './utils/lambdaEvent'
+import bodyParser from 'body-parser'
 
 function stringifyValues(data: Record<string, any>) {
   const newData: Record<string, string> = {}
@@ -42,12 +43,13 @@ export const functionsServer = async (basePath: string, port: number) => {
   const app: Application = express()
 
   app.use(cors())
+  app.use(bodyParser.raw({ type: '*/*' }))
 
   app.all('/*', async (req: Request, res: Response) => {
     const [endpoint] = req.params['0'].split('/')
 
     const event = lambdaEvent({
-      body: req.body,
+      body: req.body.toString(),
       ip: req.ip,
       method: req.method,
       path: req.path,
@@ -59,9 +61,13 @@ export const functionsServer = async (basePath: string, port: number) => {
     })
 
     try {
-      const { body, statusCode } = await endpoints[endpoint](event, {} as Context)
+      const { body, statusCode, headers } = await endpoints[endpoint](event, {} as Context)
 
-      res.status(statusCode).json(body)
+      if (headers !== undefined) {
+        Object.entries(headers).forEach(([key, value]) => res.set(key, value as string))
+      }
+
+      res.status(statusCode).send(body)
     } catch (error) {
       res.status(400).json({ error })
     }
