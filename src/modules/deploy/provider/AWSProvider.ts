@@ -1,4 +1,4 @@
-import { BaseProvider, FunctionsList } from './BaseProvider'
+import { BaseProvider } from './BaseProvider'
 import AWS from 'aws-sdk'
 
 class AWSProvider extends BaseProvider {

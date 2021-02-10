@@ -7,9 +7,9 @@ export abstract class BaseProvider {
     this.account = account
   }
 
-  abstract async createOrUpdateFunction(functionName: string, content: Buffer): Promise<void>
+  public abstract async createOrUpdateFunction(functionName: string, content: Buffer): Promise<void>
 
-  abstract async createOrUpdateFunctions(functions: Record<string, Buffer>): Promise<void>
+  public abstract async createOrUpdateFunctions(functions: Record<string, Buffer>): Promise<void>
 
-  abstract async listFunctions(): Promise<Functions>
+  public abstract async listFunctions(): Promise<Functions>
 }

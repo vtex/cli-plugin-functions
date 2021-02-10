@@ -2,7 +2,7 @@ const ZipPlugin = require('zip-webpack-plugin')
 const path = require('path')
 const glob = require('glob')
 
-module.exports.generateConfig = (dirName, distDir, account, Provider) => {
+module.exports.generateConfig = (dirName, distDir, provider) => {
   const config = {
     entry: {},
     context: dirName,
@@ -57,9 +57,6 @@ module.exports.generateConfig = (dirName, distDir, account, Provider) => {
   const afterEmit = {
     apply: (compiler) => {
       compiler.hooks.afterEmit.tap('Functions Deployment', async () => {
-        console.log('asdf', functions)
-        const provider = new Provider(account)
-
         Promise.all(
           functions.map((item) =>
             provider.createOrUpdateFunction(path.parse(item.filename).name, item.content).catch((x) => console.error(x))

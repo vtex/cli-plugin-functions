@@ -9,7 +9,7 @@ export const build = () => {
 
   const root = getSiteRoot()
 
-  const config = generateConfig(root, 'dist', account, AWSProvider)
+  const config = generateConfig(root, 'dist', new AWSProvider(account))
   const compiler = webpack({ ...config })
 
   compiler.run((error) => error && console.error('Webpack compilation failed', error))
