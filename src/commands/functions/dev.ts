@@ -1,24 +1,22 @@
 import { Command } from '@oclif/command'
 import { CustomCommand } from 'vtex'
-import { getSiteRoot } from '../modules/utils/siteRoot'
-import { proxyServer } from '../modules/proxyServer'
-import { frameworkServer } from '../modules/frameworkServer'
-import { functionsServer } from '../modules/functionsServer'
+import { getSiteRoot } from '../../modules/utils/siteRoot'
+import { proxyServer } from '../../modules/server/proxyServer'
+import { frameworkServer } from '../../modules/server/frameworkServer'
+import { functionsServer } from '../../modules/server/functionsServer'
 import path from 'path'
 
-export default class Functions extends Command {
-  static description = 'describe the command here'
+export default class FunctionsDev extends Command {
+  static description = 'run a local server to test serverless functions'
 
-  static examples = [`$ vtex-test functions`]
+  static examples = [`$ vtex-test functions dev`]
 
   static flags = {
     ...CustomCommand.globalFlags,
   }
 
-  static args = [{ name: 'file' }]
-
   async run() {
-    this.parse(Functions)
+    this.parse(FunctionsDev)
 
     const functionsPort = 3000
     const proxyPort = 8080

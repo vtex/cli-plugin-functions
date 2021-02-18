@@ -3,7 +3,7 @@ import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import { readdirSync } from 'fs'
 import path from 'path'
-import { lambdaEvent } from './utils/lambdaEvent'
+import { lambdaEvent } from '../utils/lambdaEvent'
 import bodyParser from 'body-parser'
 
 function stringifyValues(data: Record<string, any>) {
