@@ -12,7 +12,11 @@ class AWSProvider extends BaseProvider {
     const functions = await lambda.listFunctions().promise()
     const functionsObj: Record<string, { url: string }> = {}
 
-    functions?.Functions?.forEach((item) => (functionsObj[item.FunctionName!] = { ...item, url: item.Handler! }))
+    functions?.Functions?.forEach((item) => {
+      if (item.FunctionName && item.Handler) {
+        functionsObj[item.FunctionName] = { ...item, url: item.Handler }
+      }
+    })
 
     return functionsObj
   }
@@ -85,7 +89,7 @@ class AWSProvider extends BaseProvider {
     }
   }
 
-  public async createOrUpdateFunctions(functions: Record<string, Buffer>) {
+  public async createOrUpdateFunctionList(functions: Record<string, Buffer>) {
     const existingFunctions = await this.listFunctions()
 
     Promise.all(

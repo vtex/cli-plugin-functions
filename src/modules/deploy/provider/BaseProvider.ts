@@ -9,7 +9,7 @@ export abstract class BaseProvider {
 
   public abstract async createOrUpdateFunction(functionName: string, content: Buffer): Promise<void>
 
-  public abstract async createOrUpdateFunctions(functions: Record<string, Buffer>): Promise<void>
+  public abstract async createOrUpdateFunctionList(functions: Record<string, Buffer>): Promise<void>
 
   public abstract async listFunctions(): Promise<Functions>
 }
