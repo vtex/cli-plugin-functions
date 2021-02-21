@@ -56,11 +56,15 @@ class AWSProvider extends BaseProvider {
 
     const functionResp = await lambda.createFunction(params).promise()
 
+    console.log('test')
+    console.log(functionResp.FunctionArn)
+
     const respApi = await apigateway
       .createApi({
-        Name: `${this.account}-api-gateway-v2`,
+        Name: `${this.account}-api-gateway-v2-${functionName}`,
         ProtocolType: 'HTTP',
         Target: functionResp.FunctionArn,
+        RouteKey: '$default',
       })
       .promise()
 

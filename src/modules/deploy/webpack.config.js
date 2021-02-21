@@ -2,6 +2,32 @@ const ZipPlugin = require('zip-webpack-plugin')
 const path = require('path')
 const glob = require('glob')
 
+module.exports.generateConfig = (dirName, distDir, provider) => {
+  const functions = []
+  const config = mainConfig(dirName, distDir)
+
+  return {
+    ...config,
+    plugins: [
+      collectFunctions(functions),
+      afterEmit(functions, provider),
+      ...Object.keys(config.entry).map((entryName) => {
+        const zipConfig = {
+          path: path.resolve(dirName, distDir, entryName),
+          filename: entryName,
+          extension: 'zip',
+          include: [`${entryName}/index.js`],
+          pathMapper(assetPath) {
+            return path.basename(assetPath)
+          },
+        }
+
+        return new ZipPlugin(zipConfig)
+      }),
+    ],
+  }
+}
+
 function collectFunctions(functions) {
   return {
     apply: (compiler) => {
@@ -31,28 +57,7 @@ function afterEmit(functions, provider) {
   }
 }
 
-module.exports.generateConfig = (dirName, distDir, provider) => {
-  const functions = []
-  const config = mainConfig(dirName, distDir)
-
-  return {
-    ...config,
-    plugins: [
-      collectFunctions(functions),
-      afterEmit(functions, provider),
-      ...Object.keys(config.entry).map((entryName) => {
-        return new ZipPlugin({
-          path: path.resolve(dirName, distDir),
-          filename: entryName,
-          extension: 'zip',
-          include: [entryName],
-        })
-      }),
-    ],
-  }
-}
-
-const mainConfig = (dirName, distDir) => {
+function mainConfig(dirName, distDir) {
   const config = {
     entry: {},
     context: dirName,
@@ -64,7 +69,7 @@ const mainConfig = (dirName, distDir) => {
             {
               loader: 'ts-loader',
               options: {
-                configFile: 'tsconfig.fx.json',
+                configFile: path.join(__dirname, 'tsconfig.json'),
               },
             },
           ],
