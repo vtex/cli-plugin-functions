@@ -6,17 +6,17 @@ import { frameworkServer } from '../../modules/server/frameworkServer'
 import { functionsServer } from '../../modules/server/functionsServer'
 import path from 'path'
 
-export default class FunctionsDev extends Command {
-  static description = 'run a local server to test serverless functions'
+export default class SFJ extends Command {
+  static description = 'run a local server to develop with serverless functions'
 
-  static examples = [`$ vtex-test functions dev`]
+  static examples = [`$ vtex functions`]
 
   static flags = {
     ...CustomCommand.globalFlags,
   }
 
   async run() {
-    this.parse(FunctionsDev)
+    this.parse(SFJ)
 
     const functionsPort = 3000
     const proxyPort = 8080
