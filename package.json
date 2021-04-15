@@ -1,7 +1,7 @@
 {
   "name": "@vtex/cli-plugin-functions",
   "description": " A CLI plugin that manages StoreFramework serverless functions",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "bugs": "https://github.com/vtex/cli-plugin-template/issues",
   "dependencies": {
     "@oclif/command": "^1",
