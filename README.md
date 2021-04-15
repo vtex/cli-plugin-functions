@@ -27,7 +27,7 @@ $ npm install -g @vtex/cli-plugin-functions
 $ vtex COMMAND
 running command...
 $ vtex (-v|--version|version)
-@vtex/cli-plugin-functions/1.0.0 linux-x64 node-v12.22.1
+@vtex/cli-plugin-functions/1.1.0 linux-x64 node-v12.22.1
 $ vtex --help [COMMAND]
 USAGE
   $ vtex COMMAND
@@ -51,7 +51,7 @@ EXAMPLE
   $ vtex-test sfj start
 ```
 
-_See code: [build/commands/sfj/index.ts](https://github.com/vtex/cli-plugin-template/blob/v1.0.0/build/commands/sfj/index.ts)_
+_See code: [build/commands/sfj/index.ts](https://github.com/vtex/cli-plugin-template/blob/v1.1.0/build/commands/sfj/index.ts)_
 
 ## `vtex sfj:start`
 
@@ -70,5 +70,5 @@ EXAMPLE
   $ vtex functions
 ```
 
-_See code: [build/commands/sfj/start.ts](https://github.com/vtex/cli-plugin-template/blob/v1.0.0/build/commands/sfj/start.ts)_
+_See code: [build/commands/sfj/start.ts](https://github.com/vtex/cli-plugin-template/blob/v1.1.0/build/commands/sfj/start.ts)_
 <!-- commandsstop -->
