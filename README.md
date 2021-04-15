@@ -16,7 +16,7 @@ for more information.
 ![npm](https://img.shields.io/npm/v/@vtex/cli-plugin-template)
 
 <!-- toc -->
-* [VTEX CLI Plugin Template](#vtex-cli-plugin-template)
+* [VTEX CLI Plugin Functions](#vtex-cli-plugin-functions)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
