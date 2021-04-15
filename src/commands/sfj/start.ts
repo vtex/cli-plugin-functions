@@ -29,7 +29,7 @@ export default class SFJ extends Command {
    ╰──────────────────────────────────────────────╯
 `)
 
-    const functionsDir = path.join(getSiteRoot(), 'api')
+    const functionsDir = path.join(getSiteRoot(), 'functions')
 
     await functionsServer(functionsDir, functionsPort)
 

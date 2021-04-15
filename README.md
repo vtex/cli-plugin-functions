@@ -1,20 +1,16 @@
-# VTEX CLI Plugin Template
+# VTEX CLI Plugin Functions
 
-Extend the `vtex` toolbelt!
+Test StoreFramework JAMStack serverless functions locally.
 
 ## Developing
 
-1. Run `yarn link` on this project.
-1. Clone `vtex/toolbelt` and follow the steps on the Contributing section.
-1. Now run `yarn link @vtex/cli-plugin-functions` (or the new name) on the `vtex/toolbelt` project.
-1. Run `yarn watch` on the `vtex/toolbelt`
-1. Test the command on a Gatsby store with `vtex-test functions`
-
-The Gatsby store should have a directory `api` containing functions. You can
-use this project as an example:
+The Gatsby store should have a directory `functions` containing serverless
+functions. You can use this project as an example:
 [vtex-site/storefaas.store](https://github.com/vtex-sites/storefaas.store).
 
-For more information, read [Ocliff Docs](https://oclif.io/docs/introduction).
+Please refer to the [this Notion
+page](https://www.notion.so/vtexhandbook/Serverless-functions-d4fc56c349794a2a8f9cc04daef06677)
+for more information.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 ![npm](https://img.shields.io/npm/v/@vtex/cli-plugin-template)
